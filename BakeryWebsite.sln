@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BakeryWebsite", "BakeryWebsite\BakeryWebsite.csproj", "{7FE9F910-5DCF-4B6E-BA21-BB702883C0AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BakeryWebsite.Tests", "BakeryWebsite.Tests\BakeryWebsite.Tests.csproj", "{7AA89C59-8A80-4A93-9D0C-4CE94CE0DA03}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7FE9F910-5DCF-4B6E-BA21-BB702883C0AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FE9F910-5DCF-4B6E-BA21-BB702883C0AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FE9F910-5DCF-4B6E-BA21-BB702883C0AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FE9F910-5DCF-4B6E-BA21-BB702883C0AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AA89C59-8A80-4A93-9D0C-4CE94CE0DA03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AA89C59-8A80-4A93-9D0C-4CE94CE0DA03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AA89C59-8A80-4A93-9D0C-4CE94CE0DA03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AA89C59-8A80-4A93-9D0C-4CE94CE0DA03}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

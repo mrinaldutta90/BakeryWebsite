@@ -1,0 +1,50 @@
+﻿
+@model BakeryWebsite.Models.ObservableProducts
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Place Order</title>
+</head>
+<body>
+    <div>
+        @using (Html.BeginForm("PlaceOrder", "Home"))
+        {
+            
+                
+            <table id="tableProducts" class="table">
+                @*<tr>
+                    <td>Select Product</td>
+                  
+                    <td>@Html.DropDownList("listItems","Select")</td>
+                </tr>*@
+                <tr>
+                    <td>Number of Vegemite Scrolls </td>
+                    <td><input name="Vegemite Scroll Quantity" id="txtVegemiteScrollQuantity" type="number" value="@ViewBag.vegScrollQuantity"  /></td>
+                </tr>
+                <tr>
+                    <td>Number of BlueBerry Muffins </td>
+                    <td><input name="BlueBerry Muffin Quantity" id="txtBlueBerryMuffinQuantity" type="number" value="@ViewBag.blueberryMuffinQuantity"  /></td>
+                </tr>
+                <tr>
+                    <td>Number of Croissants  </td>
+                    <td><input name="Croissant Quantity" id="txtCrossaintQuantity" type="number"  value="@ViewBag.croissantQuantity"/></td>
+                </tr>
+                <tr>
+                    <td> Output   </td>
+                    <td> @Html.TextAreaFor(model => model.OutputString, new { @rows=20, @cols=40 }) </td>
+                </tr>
+                
+
+
+            </table>
+            <input type="submit" id="btnPlaceOrder" value="Place Order" class="btn btn-default" />
+
+        }
+    </div>
+</body>
+</html>
+
