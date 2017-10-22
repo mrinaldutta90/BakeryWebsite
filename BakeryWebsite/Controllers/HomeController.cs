@@ -45,14 +45,7 @@ namespace BakeryWebsite.Controllers
             {
 
                 #region View processing for the input product Quantities
-                //If blank replacing by 0
-                int inputNumber;
-                if(!int.TryParse(form[product.ProductName.ToString() + " " + "Quantity"].ToString(),out inputNumber))
-                {
-                    return View();
-                }
-
-
+                //If blank replacing by 0           
 
                 product.OrderQuantity = Convert.ToInt32( (form[product.ProductName.ToString() + " " + "Quantity"] == "" ?  0.ToString() : form[product.ProductName.ToString() + " " + "Quantity"]).ToString() );
 
@@ -97,7 +90,7 @@ namespace BakeryWebsite.Controllers
         {
             #region Breaks each order into slabs and calculate the slab prices and Remaining Quantities
 
-            bool isAtleastOneCominationFound = false;
+            bool isAtleastOneCombinationFound = false;
             //Assigning the total items for this particular product
             int totalItems = order.OrderQuantity;
             //Orders the Pricelist based on Descending Quantities, so as to use the least packs
@@ -187,7 +180,7 @@ namespace BakeryWebsite.Controllers
                         itemsCalculated += slab.Packs * slab.Quantity;
                         slab.TotalPrice = slab.Packs * slab.Price;
                     }
-                    isAtleastOneCominationFound = true;
+                    isAtleastOneCombinationFound = true;
                     break;// break if akdtleast one combination found
                 }
 
@@ -195,7 +188,7 @@ namespace BakeryWebsite.Controllers
 
             }
             //Set the remaining Quantity as a difference of OrderedQuantity and the closest Number of Items for which a combination was found
-            if (isAtleastOneCominationFound) //If No Slab Combinations found that means the original Quantity is remaining
+            if (isAtleastOneCombinationFound) //If No Slab Combinations found that means the original Quantity is remaining
                 order.RemainingQuantity = order.OrderQuantity - totalItems;
             else
                 order.RemainingQuantity = order.OrderQuantity;
