@@ -17,6 +17,18 @@ namespace BakeryWebsite.Models
         public int RemainingQuantity { get; set; } // Remainning Quantity after assigining all packs
         public double ProductTotalPrice { get; set; } // Total Price for this Order 
         public List<RateSlabCombination> RateSlabCombinations { get; set; }
+
+        public Order()
+        {
+
+        }
+
+        public Order(string productName, List<RateSlab> rateSlabs, int orderQuantity)
+        {
+            this.ProductName = productName;
+            this.RateSlabs = rateSlabs;
+            this.OrderQuantity = orderQuantity;
+        }
       
     }
 
