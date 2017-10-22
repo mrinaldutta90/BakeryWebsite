@@ -44,7 +44,8 @@ namespace BakeryWebsite.Controllers
             {
 
                 #region View processing for the input product Quantities
-                product.OrderQuantity = Convert.ToInt32( form[product.ProductName.ToString() + " " + "Quantity"].ToString() ??  0.ToString());
+                //If blank replacing by 0
+                product.OrderQuantity = Convert.ToInt32( (form[product.ProductName.ToString() + " " + "Quantity"] == "" ?  0.ToString() : form[product.ProductName.ToString() + " " + "Quantity"]).ToString() );
 
                 if (product.ProductName == "Vegemite Scroll")
                     ViewBag.vegScrollQuantity = product.OrderQuantity;
