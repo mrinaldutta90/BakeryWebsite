@@ -67,28 +67,89 @@ namespace BakeryWebsite.Controllers
                 #region Breaks each order into slabs and calculate the slab prices and Remaining Quantities
 
                 //Assigning the total items for this particular product
-                int itemsLeft = product.OrderQuantity; 
+                int totalItems = product.OrderQuantity; 
                 //Orders the Pricelist based on Descending Quantities, so as to use the least packs
                 product.RateSlabs = product.RateSlabs.OrderByDescending(i => i.Quantity).ToList();
+                while (totalItems > 0)
+                  {
+                    int startIndex = 1;
+                    foreach (RateSlab rate in product.RateSlabs)
+                    {
+                        rate.Index = startIndex;
+                        if (rate.Quantity != 0)
+                            rate.MaxOccurance = totalItems / rate.Quantity;// Maximum number of times this particular slab can be assigned for the total count of products
+                        else
+                        {
+                            rate.MaxOccurance = 0;
+                            rate.DummySlab = true;
+                        }
+                        startIndex++;
+                    }
 
-                foreach (RateSlab rate in product.RateSlabs)
-                {
-                    rate.Packs = itemsLeft / rate.Quantity; //Gets the number of packs for a particular rate slab
-                    itemsLeft = itemsLeft % rate.Quantity; //Gets the number of packs remaining 
-                    rate.TotalPrice = rate.Packs * rate.Price; // Calculate Slab Total Price
+                    RateSlab rateslab1 = new RateSlab();
+                    RateSlab rateslab2 = new RateSlab();
+                    RateSlab rateslab3 = new RateSlab();
 
-                    if (itemsLeft == 0) // No More Items left to assign
+                    rateslab1 = product.RateSlabs.Find(a => a.Index == 1);
+                    rateslab2 = product.RateSlabs.Find(a => a.Index == 2);
+                    rateslab3 = product.RateSlabs.Find(a => a.Index == 3);
+                    product.RateSlabCombinations = new List<RateSlabCombination>();
+
+                    for (int i = 0; i <= rateslab1.MaxOccurance; i++)
+                    {
+                        for (int j = 0; j <= rateslab2.MaxOccurance; j++)
+                        {
+                            for (int k = 0; k <= rateslab3.MaxOccurance; k++)
+                            {
+                                if ((rateslab1.Quantity * i + rateslab2.Quantity * j + rateslab3.Quantity * k) == totalItems)
+                                {
+                                    rateslab1.Packs = i;
+                                    rateslab2.Packs = j;
+                                    rateslab3.Packs = k;
+
+                                    RateSlab rateSlabForCombination1 = new RateSlab(rateslab1.Index, rateslab1.Quantity, rateslab1.Price, i, rateslab1.MaxOccurance, rateslab1.DummySlab);
+                                    RateSlab rateSlabForCombination2 = new RateSlab(rateslab2.Index, rateslab2.Quantity, rateslab2.Price, j, rateslab2.MaxOccurance, rateslab2.DummySlab);
+                                    RateSlab rateSlabForCombination3 = new RateSlab(rateslab3.Index, rateslab3.Quantity, rateslab3.Price, k, rateslab3.MaxOccurance, rateslab3.DummySlab);
+
+
+
+                                    RateSlabCombination rateSlabComination = new RateSlabCombination();
+                                    rateSlabComination.RateSlabs = new List<RateSlab>();
+                                    rateSlabComination.RateSlabs.Add(rateSlabForCombination1);
+                                    rateSlabComination.RateSlabs.Add(rateSlabForCombination2);
+
+                                    if (!rateslab3.DummySlab)
+                                        rateSlabComination.RateSlabs.Add(rateSlabForCombination3);
+                                    rateSlabComination.TotalPacks = rateSlabComination.RateSlabs.Sum(l => l.Packs);
+                                    product.RateSlabCombinations.Add(rateSlabComination);
+
+                                }
+                            }
+                        }
+                    }
+
+                    product.RateSlabs.RemoveAll(l => l.DummySlab = true);
+
+                    product.RateSlabs = product.RateSlabCombinations.OrderBy(l => l.TotalPacks).FirstOrDefault().RateSlabs;
+                    int itemsCalculated = 0;
+                    foreach (RateSlab slab in product.RateSlabs)
+                    {
+                        itemsCalculated += slab.Packs * slab.Quantity;
+                        slab.TotalPrice = slab.Packs * slab.Price;
+                    }
+
+
+                    //Calculate the Remaining Quantities for a particular product order
+                    if (itemsCalculated == totalItems)
                         break;
+                    else totalItems--;
+
                 }
-
-                //Calculate the Remaining Quantities for a particular product order
-                if (itemsLeft > 0)
-                    product.RemainingQuantity = itemsLeft;
-                else
-                    product.RemainingQuantity = 0;
-
+                product.RemainingQuantity = product.OrderQuantity - totalItems;
                 product.ProductTotalPrice = product.RateSlabs.Sum(i => i.TotalPrice);
                 product.DeliveredQuantity = product.OrderQuantity - product.RemainingQuantity;
+
+                
 
                 #endregion
 
