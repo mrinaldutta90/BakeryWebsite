@@ -184,7 +184,7 @@ namespace BakeryWebsite.Controllers
                     break;// break if akdtleast one combination found
                 }
 
-                else totalItems--; //If no combination found for the amount enterjded, decrement the total items by one and try again
+                else totalItems--; //If no combination found for the amount entered, decrement the total items by one and try again
 
             }
             //Set the remaining Quantity as a difference of OrderedQuantity and the closest Number of Items for which a combination was found
