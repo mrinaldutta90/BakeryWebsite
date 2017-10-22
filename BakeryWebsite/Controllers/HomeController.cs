@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Web.Script.Serialization;
 using System.IO;
 using System.Configuration;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BakeryWebsite.Controllers
 {
@@ -45,6 +46,14 @@ namespace BakeryWebsite.Controllers
 
                 #region View processing for the input product Quantities
                 //If blank replacing by 0
+                int inputNumber;
+                if(!int.TryParse(form[product.ProductName.ToString() + " " + "Quantity"].ToString(),out inputNumber))
+                {
+                    return View();
+                }
+
+
+
                 product.OrderQuantity = Convert.ToInt32( (form[product.ProductName.ToString() + " " + "Quantity"] == "" ?  0.ToString() : form[product.ProductName.ToString() + " " + "Quantity"]).ToString() );
 
                 if (product.ProductName == "Vegemite Scroll")
@@ -60,7 +69,7 @@ namespace BakeryWebsite.Controllers
                 #region Processing the output string
                 //String Processing to format the output
 
-                observableProducts.OutputString += product.DeliveredQuantity.ToString() + " " + product.ProductShortName + " " + product.ProductTotalPrice.ToString() + "\n";
+                observableProducts.OutputString += product.DeliveredQuantity.ToString() + " " + product.ProductShortName + " $" + product.ProductTotalPrice.ToString() + "\n";
                 foreach (RateSlab rateslab in product.RateSlabs)
                 {
                     if(rateslab.Packs >0)                    
@@ -204,7 +213,7 @@ namespace BakeryWebsite.Controllers
             #region Fetching the List of Products from the static JSON file
             //In an ideal world this would be maintained in a relational database
             var products = new List<Order>();
-            using (StreamReader r = new StreamReader(ConfigurationManager.AppSettings["LocalJSONPath"]))
+            using (StreamReader r = new StreamReader(AppDomain.CurrentDomain.BaseDirectory +"\\SourceJSON.json" ))
             {
                 string json = r.ReadToEnd();
                 products = JsonConvert.DeserializeObject<List<Order>>(json);
