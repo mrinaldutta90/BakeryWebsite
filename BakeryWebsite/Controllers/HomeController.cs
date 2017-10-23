@@ -136,10 +136,7 @@ namespace BakeryWebsite.Controllers
                         {
                             if ((rateSlab1.Quantity * i + rateSlab2.Quantity * j + rateSlab3.Quantity * k) == totalItems)
                             {
-                                // Hurray! We have found a combination to match the totalItems
-                                rateSlab1.Packs = i;
-                                rateSlab2.Packs = j;
-                                rateSlab3.Packs = k;
+                                // Hurray! We have found a combination to match the totalItems                               
 
                                 //Constructing three new rateSlabs to be used in the rateSlabComination object
                                 RateSlab rateSlabForCombination1 = new RateSlab(rateSlab1.Index, rateSlab1.Quantity, rateSlab1.Price, i, rateSlab1.MaxOccurance, rateSlab1.DummySlab);
