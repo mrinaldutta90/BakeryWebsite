@@ -104,10 +104,10 @@ namespace BakeryWebsite.Controllers
                     //handling for the Dummy Slab introduced for Vegemite Scroll
                     if (rate.Quantity != 0)
                         // Maximum number of times this particular slab can be assigned for the total count of products
-                        rate.MaxOccurance = totalItems / rate.Quantity;
+                        rate.MaxPacks = totalItems / rate.Quantity;
                     else
                     {
-                        rate.MaxOccurance = 0;
+                        rate.MaxPacks = 0;
                         rate.DummySlab = true;
                     }
                     startIndex++;
@@ -128,20 +128,20 @@ namespace BakeryWebsite.Controllers
 
                 //Looping through three layers of Slabs, to find out the combinations for which the number of Sum(pack*Quantity) matches the totalItems
                 // Checking for all combinations i=0 to Max, j=0 to Max, k=0 to Max. Total loop execution (i*1)*(j+1)*(k+1)
-                for (int i = 0; i <= rateSlab1.MaxOccurance; i++)
+                for (int i = 0; i <= rateSlab1.MaxPacks; i++)
                 {
-                    for (int j = 0; j <= rateSlab2.MaxOccurance; j++)
+                    for (int j = 0; j <= rateSlab2.MaxPacks; j++)
                     {
-                        for (int k = 0; k <= rateSlab3.MaxOccurance; k++)
+                        for (int k = 0; k <= rateSlab3.MaxPacks; k++)
                         {
                             if ((rateSlab1.Quantity * i + rateSlab2.Quantity * j + rateSlab3.Quantity * k) == totalItems)
                             {
                                 // Hurray! We have found a combination to match the totalItems                               
 
                                 //Constructing three new rateSlabs to be used in the rateSlabComination object
-                                RateSlab rateSlabForCombination1 = new RateSlab(rateSlab1.Index, rateSlab1.Quantity, rateSlab1.Price, i, rateSlab1.MaxOccurance, rateSlab1.DummySlab);
-                                RateSlab rateSlabForCombination2 = new RateSlab(rateSlab2.Index, rateSlab2.Quantity, rateSlab2.Price, j, rateSlab2.MaxOccurance, rateSlab2.DummySlab);
-                                RateSlab rateSlabForCombination3 = new RateSlab(rateSlab3.Index, rateSlab3.Quantity, rateSlab3.Price, k, rateSlab3.MaxOccurance, rateSlab3.DummySlab);
+                                RateSlab rateSlabForCombination1 = new RateSlab(rateSlab1.Index, rateSlab1.Quantity, rateSlab1.Price, i, rateSlab1.MaxPacks, rateSlab1.DummySlab);
+                                RateSlab rateSlabForCombination2 = new RateSlab(rateSlab2.Index, rateSlab2.Quantity, rateSlab2.Price, j, rateSlab2.MaxPacks, rateSlab2.DummySlab);
+                                RateSlab rateSlabForCombination3 = new RateSlab(rateSlab3.Index, rateSlab3.Quantity, rateSlab3.Price, k, rateSlab3.MaxPacks, rateSlab3.DummySlab);
 
 
                                 // Instantiated the RateSlabCombination object to add the a Slab Combination matching the criteria
@@ -164,21 +164,20 @@ namespace BakeryWebsite.Controllers
 
                 
 
-                int itemsCalculated = 0;
+                
                 if (order.RateSlabCombinations.Count() != 0) // If there is any rateSlabsCominations found then do this
                 {
                     //If there is more than one rate slab combination, Fetch the Rate slab combination which has the least Total packs 
                     order.RateSlabs = order.RateSlabCombinations.OrderBy(l => l.TotalPacks).FirstOrDefault().RateSlabs;
 
                     // Calculate the Total Price for a product TotalPrice = Packs* Price of Pack
-                    //Also Calculate the number of items accounted for
+                    
                     foreach (RateSlab slab in order.RateSlabs)
-                    {
-                        itemsCalculated += slab.Packs * slab.Quantity;
+                    {                        
                         slab.TotalPrice = slab.Packs * slab.Price;
                     }
                     isAtleastOneCombinationFound = true;
-                    break;// break if akdtleast one combination found
+                    break;// break if atleast one combination found
                 }
 
                 else totalItems--; //If no combination found for the amount entered, decrement the total items by one and try again

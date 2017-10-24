@@ -39,9 +39,9 @@ namespace BakeryWebsite.Models
         public double Price { get; set; } //  Masterdata, Read from JSON
         public int Packs { get; set; } //Assigned Packs for this RateSlab
         public double TotalPrice { get; set; }// Total Price for this RateSlab
-        public int MaxOccurance { get; set; }
+        public int MaxPacks { get; set; } // Maximum number of packs for which this slab may be used
 
-        public bool DummySlab { get; set; } = false;
+        public bool DummySlab { get; set; } = false; //if its a real or dummy slab
 
         public RateSlab( int index, int quantity, double price, int packs, int maxOccurance, bool dummySlab)
         {
@@ -49,7 +49,7 @@ namespace BakeryWebsite.Models
             this.Quantity = quantity;
             this.Price = price;
             this.Packs = packs;
-            this.MaxOccurance = maxOccurance;
+            this.MaxPacks = maxOccurance;
             this.DummySlab = dummySlab;
         }
 
